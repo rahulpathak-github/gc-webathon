@@ -15,9 +15,7 @@ import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Avatar from "@mui/material/Avatar";
-import SearchBar from "./SearchBar";
 import Search from "@mui/icons-material/Search";
-import AddPost from "./AddPost";
 
 const DrawerAppBar = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -38,7 +36,6 @@ const DrawerAppBar = (props) => {
           @username
         </Typography>
       </Toolbar>
-      <AddPost />
       <Divider />
       <List>
         {[
@@ -63,7 +60,6 @@ const DrawerAppBar = (props) => {
     <div>
       <Toolbar>
         <Search sx={{ paddingX: 2 }} />
-        <SearchBar />
       </Toolbar>
       <Divider />
       <List>
