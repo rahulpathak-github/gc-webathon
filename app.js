@@ -1,15 +1,17 @@
 const express = require("express");
+
+const postRouter = require("./Routers/postRouter");
+const AppError = require("./Utils/appError");
+
 const app = express();
 
 app.use(express.json());
 
 //ROUTES
+app.use("/api/post", postRouter);
 
 app.all("*", (req, res, next) => {
-  console.log(req);
-  res.status(200).json({
-    status: "success",
-  });
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 module.exports = app;
