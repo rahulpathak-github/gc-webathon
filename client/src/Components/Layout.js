@@ -10,8 +10,7 @@ const Layout = (props) => {
         disableGutters
         sx={{
           marginTop: "50px",
-          width: { md: `calc(100% - ${drawerWidth * 2 + 100}px)` },
-          ml: { md: `${drawerWidth}px` },
+          width: "100%",
         }}
       >
         {props.children}
