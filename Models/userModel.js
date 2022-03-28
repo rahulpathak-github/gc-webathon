@@ -14,7 +14,6 @@ const userSchema = new Schema(
 
     name: {
       type: String,
-      required: [true, "user handle is required"],
     },
 
     gender: {
