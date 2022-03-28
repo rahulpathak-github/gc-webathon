@@ -1,5 +1,7 @@
 const express = require("express");
 
+const authRouter = require("./Routers/authRouter");
+const userRouter = require("./Routers/userRouter");
 const postRouter = require("./Routers/postRouter");
 const AppError = require("./Utils/appError");
 
@@ -8,6 +10,8 @@ const app = express();
 app.use(express.json());
 
 //ROUTES
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 
 app.all("*", (req, res, next) => {
