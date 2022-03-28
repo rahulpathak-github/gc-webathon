@@ -21,6 +21,20 @@ const postSchema = new Schema(
     img: {
       type: String,
     },
+
+    taggedUsers: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    comments: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },

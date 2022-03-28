@@ -14,7 +14,7 @@ const userSchema = new Schema(
 
     name: {
       type: String,
-      required: [true, "user full name is required"],
+      required: [true, "user handle is required"],
     },
 
     gender: {
@@ -57,6 +57,20 @@ const userSchema = new Schema(
       {
         type: mongoose.Schema.ObjectId,
         ref: "Post",
+      },
+    ],
+
+    followers: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    following: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
       },
     ],
   },
