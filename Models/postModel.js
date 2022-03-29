@@ -18,8 +18,9 @@ const postSchema = new Schema(
       type: String,
     },
 
-    img: {
+    fileId: {
       type: String,
+      required: true,
     },
 
     taggedUsers: [
@@ -33,6 +34,13 @@ const postSchema = new Schema(
       {
         type: mongoose.Schema.ObjectId,
         ref: "Comment",
+      },
+    ],
+
+    likedBy: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
       },
     ],
   },

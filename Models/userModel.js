@@ -72,6 +72,13 @@ const userSchema = new Schema(
         ref: "User",
       },
     ],
+
+    notifications: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Notification",
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
