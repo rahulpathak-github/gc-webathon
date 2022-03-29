@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -15,7 +14,26 @@ import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Avatar from "@mui/material/Avatar";
+import SearchBar from "./SearchBar";
 import Search from "@mui/icons-material/Search";
+import Badge from "@mui/material/Badge";
+import Notification from "@mui/icons-material/Notifications";
+import FormDialog from "./FormDialog";
+import Feed from "@mui/icons-material/Feed";
+import Person from "@mui/icons-material/Person";
+import Logout from "@mui/icons-material/Logout";
+
+const navItems = [
+  { text: "Feed", path: "/", icon: <Feed />, badge: false },
+  { text: "Profile", path: "/profile", icon: <Person />, badge: false },
+  {
+    text: "Notifications",
+    path: "/notifications",
+    icon: <Notification />,
+    badge: true,
+  },
+  { text: "Signout", path: "/logout", icon: <Logout />, badge: false },
+];
 
 const DrawerAppBar = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -38,15 +56,17 @@ const DrawerAppBar = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        {[
-          { text: "Feed", path: "/" },
-          { text: "Profile", path: "/profile" },
-          { text: "Signout", path: "/logout" },
-        ].map((text, index) => (
-          <NavLink to={text.path}>
+        {navItems.map((text, index) => (
+          <NavLink to={text.path} onClick={handleDrawerToggle}>
             <ListItem button key={index}>
               <ListItemIcon>
-                <InboxIcon />
+                {text.badge ? (
+                  <Badge badgeContent={4} color="primary">
+                    {text.icon}
+                  </Badge>
+                ) : (
+                  text.icon
+                )}
               </ListItemIcon>
               <ListItemText primary={text.text} sx={{ float: "right" }} />
             </ListItem>
@@ -60,6 +80,7 @@ const DrawerAppBar = (props) => {
     <div>
       <Toolbar>
         <Search sx={{ paddingX: 2 }} />
+        <SearchBar />
       </Toolbar>
       <Divider />
       <List>

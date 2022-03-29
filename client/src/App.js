@@ -7,6 +7,7 @@ import Layout from "./Components/Layout";
 import Notifications from "./Views/Notifications";
 import Auth from "./Views/Auth";
 import AuthContext from "./Context/AuthContext";
+import DynamicProfile from "./Views/DynamicProfile";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -58,6 +59,9 @@ const App = () => {
         </Route>
         <Route exact path="/profile">
           <Layout>{!loading ? <Profile /> : null}</Layout>
+        </Route>
+        <Route exact path="/profile/:id">
+          <Layout>{!loading ? <DynamicProfile /> : null}</Layout>
         </Route>
         <Route exact path="/notifications">
           <Layout>{!loading ? <Notifications /> : null}</Layout>
