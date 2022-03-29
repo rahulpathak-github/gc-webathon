@@ -1,4 +1,5 @@
 const Post = require("./../Models/postModel");
+const Notification = require("./../Models/notificationModel");
 const User = require("./../Models/userModel");
 const Comment = require("./../Models/commentModel");
 const catchAsync = require("./../Utils/catchAsync");

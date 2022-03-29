@@ -14,6 +14,12 @@ exports.getAllPost = catchAsync(async (req, res, next) => {
     .populate({
       path: "author",
       select: "handle",
+    })
+    .populate({
+      path: "comments",
+      populate: {
+        path: "replies",
+      },
     });
 
   res.status(200).json({
@@ -33,6 +39,12 @@ exports.getPost = catchAsync(async (req, res, next) => {
     .populate({
       path: "author",
       select: "handle",
+    })
+    .populate({
+      path: "comments",
+      populate: {
+        path: "replies",
+      },
     });
 
   if (!post) {

@@ -4,7 +4,7 @@ const userController = require("../Controllers/userController");
 
 const router = express.Router();
 
-router.get("/", authController.protect, userController.getAllUser);
+router.get("/", userController.getAllUser);
 
 router
   .route("/:id")

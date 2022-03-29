@@ -4,7 +4,7 @@ const catchAsync = require("./../Utils/catchAsync");
 const AppError = require("./../Utils/appError");
 
 exports.getAllUser = catchAsync(async (req, res, next) => {
-  const users = await User.find().select("handle");
+  const users = await User.find().select("handle name profilePic");
 
   res.status(200).json({
     status: "success",
@@ -16,16 +16,16 @@ exports.getAllUser = catchAsync(async (req, res, next) => {
 
 exports.getUser = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.params.id)
-    .select("posts followers followings") // TODO: select only handle from tagged users
-    .populate({ path: "posts", select: "createdAt caption taggedUsers" })
-    .populate({
-      path: "followers",
-      select: "handle",
-    })
-    .populate({
-      path: "followers",
-      select: "handle",
-    });
+    .select("posts followers followings")
+    .populate({ path: "posts", select: "createdAt caption taggedUsers" });
+  // .populate({
+  //   path: "followers",
+  //   select: "handle",
+  // })
+  // .populate({
+  //   path: "followers",
+  //   select: "handle",
+  // });
 
   if (!user) {
     return next(new AppError(`No user found with ID ${req.params.id}`, 404));
@@ -48,6 +48,11 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     await User.findByIdAndUpdate(req.user._id, {
       $addToSet: { followings: req.params.id },
     });
+
+    const user = await User.findById(req.user._id);
+    console.log(user);
+
+    console.log("added");
 
     const createdAt = Date.now();
     const newNotification = new Notification({
