@@ -1,9 +1,9 @@
 const Post = require("./../Models/postModel");
-const Notification = require("./../Models/notificationModel");
 const User = require("./../Models/userModel");
 const Comment = require("./../Models/commentModel");
 const catchAsync = require("./../Utils/catchAsync");
 const AppError = require("./../Utils/appError");
+const Notification = require("./../Models/notificationModel");
 
 exports.createComment = catchAsync(async (req, res, next) => {
   if (!req.body.postId && !req.body.parCommentId) {
@@ -17,10 +17,19 @@ exports.createComment = catchAsync(async (req, res, next) => {
     body: req.body.body,
     post: req.body.postId,
   });
-
+  console.log("rstrtydyughcghcjfjvfyufyu");
   const createdComment = await Comment.create(newComment);
+  const newCommentX = await Comment.findById(createdComment._id)
+    .populate({
+      path: "author",
+    })
+    .populate({
+      path: "replies",
+    });
+  console.log("rstrtydyufyufyu");
 
   if (req.body.parCommentId) {
+    console.log("tfghfkfjv");
     await Comment.findByIdAndUpdate(req.body.parCommentId, {
       $push: { replies: createdComment._id },
     });
@@ -49,16 +58,25 @@ exports.createComment = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: {
-      comment: createdComment,
+      comment: newCommentX,
     },
   });
+  console.log("done");
 });
 
 exports.getAllComment = catchAsync(async (req, res, next) => {
-  const post = await Post.findById(req.params.id).select("comments").populate({
-    path: "comments",
-    select: "author createdAt body",
-  });
+  const post = await Post.findById(req.params.id)
+    .select("comments")
+    .populate({
+      path: "comments",
+      populate: {
+        path: "replies author",
+        //  path: "replies",
+        // populate: {
+        //   path: "author",
+        // },
+      },
+    });
 
   if (!post) {
     return next(new AppError(`No post found with ID ${req.params.id}`, 404));

@@ -10,6 +10,7 @@ import { Box } from "@mui/material";
 import { useState, useContext } from "react";
 import AuthContext from "../Context/AuthContext";
 import axios from "../AxiosInstance";
+import Spinner from "./Spinner";
 
 const SignupForm = (props) => {
   const [username, setUsername] = useState(null);
@@ -17,8 +18,11 @@ const SignupForm = (props) => {
   const [password, setPassword] = useState(null);
   const { updateAuthData } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(false);
+
   const signupHandler = () => {
     // console.log("skfhakjsfhkajsdh");
+    setLoading(true);
     axios
       .post(`api/auth/signup`, {
         handle: username,
@@ -29,6 +33,7 @@ const SignupForm = (props) => {
         console.log(res);
         localStorage.setItem("jwt", res.data.jwt);
         updateAuthData(true, res.data.data.user);
+        setLoading(false);
       })
       .catch((err) => {
         window.alert(err.response.data.message);
@@ -81,9 +86,13 @@ const SignupForm = (props) => {
             // paddingY: 2,
           }}
         >
-          <Button size="large" variant="contained" onClick={signupHandler}>
-            SignUp
-          </Button>
+          {loading === true ? (
+            <Spinner />
+          ) : (
+            <Button size="large" variant="contained" onClick={signupHandler}>
+              SignUp
+            </Button>
+          )}
         </Box>
         <Typography>
           {"Already a member? "}

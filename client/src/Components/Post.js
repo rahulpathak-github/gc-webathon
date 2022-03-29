@@ -24,9 +24,11 @@ import { useEffect, useState } from "react";
 import DeletePost from "./DeletePost";
 import { TextField, Box } from "@mui/material";
 import EnterIcon from "@mui/icons-material/Send";
+import AuthContext from "../Context/AuthContext";
 
 export default function Post(props) {
   const [expanded, setExpanded] = React.useState(false);
+  const { authenticated, currentUser } = React.useContext(AuthContext);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -35,7 +37,11 @@ export default function Post(props) {
   return (
     <Card sx={{ width: "100%", marginBottom: "20px" }}>
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: red[500] }}>KG</Avatar>}
+        avatar={
+          <Avatar sx={{ bgcolor: red[500] }}>
+            {props.post.author.handle[0]}
+          </Avatar>
+        }
         action={
           <ButtonGroup>
             <EditPost post={props.post} updatePost={props.updatePost} />

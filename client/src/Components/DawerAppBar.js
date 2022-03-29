@@ -22,6 +22,8 @@ import FormDialog from "./FormDialog";
 import Feed from "@mui/icons-material/Feed";
 import Person from "@mui/icons-material/Person";
 import Logout from "@mui/icons-material/Logout";
+import { CircularProgress, Button } from "@mui/material";
+import AuthContext from "../Context/AuthContext";
 
 const navItems = [
   { text: "Feed", path: "/", icon: <Feed />, badge: false },
@@ -38,6 +40,7 @@ const navItems = [
 const DrawerAppBar = (props) => {
   const [open, setOpen] = React.useState(false);
   const [discOpen, setDiscOpen] = React.useState(false);
+  const { authenticated } = React.useContext(AuthContext);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -47,88 +50,129 @@ const DrawerAppBar = (props) => {
     setDiscOpen(!discOpen);
   };
 
-  const drawer = (
-    <div>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          @username
-        </Typography>
-      </Toolbar>
-      <Divider />
-      <List>
-        {navItems.map((text, index) => (
-          <NavLink to={text.path} onClick={handleDrawerToggle}>
-            <ListItem button key={index}>
-              <ListItemIcon>
-                {text.badge ? (
-                  <Badge badgeContent={4} color="primary">
-                    {text.icon}
-                  </Badge>
-                ) : (
-                  text.icon
-                )}
-              </ListItemIcon>
-              <ListItemText primary={text.text} sx={{ float: "right" }} />
-            </ListItem>
-          </NavLink>
-        ))}
-      </List>
-    </div>
+  const spinner = (
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <CircularProgress />
+    </Box>
   );
 
-  const discDrawer = (
-    <div>
-      <Toolbar>
-        <Search sx={{ paddingX: 2 }} />
-        <SearchBar />
-      </Toolbar>
-      <Divider />
-      <List>
-        {["Rahul Pathak", "Anand Amar", "Kushagra Gupta"].map((item, idx) => (
-          <ListItem
-            key={idx}
-            button
-            secondaryAction={
-              <IconButton>
-                <PersonAddAlt1Icon />
-              </IconButton>
-            }
-          >
-            <ListItemIcon>
-              <Avatar
-                src="https://imageio.forbes.com/specials-images/imageserve/5faad4255239c9448d6c7bcd/Best-Animal-Photos-Contest--Close-Up-Of-baby-monkey/960x0.jpg?fit=bounds&format=jpg&width=960"
-                sx={{ width: 50, height: 50 }}
+  let drawer = null;
+
+  if (authenticated)
+    drawer = (
+      <div>
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            @username
+          </Typography>
+        </Toolbar>
+        <Divider />
+        <List>
+          {navItems.map((text, index) => (
+            <NavLink to={text.path} onClick={handleDrawerToggle}>
+              <ListItem button key={index}>
+                <ListItemIcon>
+                  {text.badge ? (
+                    <Badge badgeContent={4} color="primary">
+                      {text.icon}
+                    </Badge>
+                  ) : (
+                    text.icon
+                  )}
+                </ListItemIcon>
+                <ListItemText primary={text.text} sx={{ float: "right" }} />
+              </ListItem>
+            </NavLink>
+          ))}
+        </List>
+      </div>
+    );
+  else
+    drawer = (
+      <Box
+        sx={{
+          position: "relative",
+          display: "flex",
+          top: "50vh",
+          justifyContent: "center",
+        }}
+      >
+        <NavLink to="/auth">
+          <Button>Auth</Button>;
+        </NavLink>
+      </Box>
+    );
+
+  let discDrawer = null;
+  if (authenticated)
+    discDrawer = (
+      <div>
+        <Toolbar>
+          <Search sx={{ paddingX: 2 }} />
+          <SearchBar />
+        </Toolbar>
+        <Divider />
+        <List>
+          {["Rahul Pathak", "Anand Amar", "Kushagra Gupta"].map((item, idx) => (
+            <ListItem
+              key={idx}
+              button
+              secondaryAction={
+                <IconButton>
+                  <PersonAddAlt1Icon />
+                </IconButton>
+              }
+            >
+              <ListItemIcon>
+                <Avatar
+                  src="https://imageio.forbes.com/specials-images/imageserve/5faad4255239c9448d6c7bcd/Best-Animal-Photos-Contest--Close-Up-Of-baby-monkey/960x0.jpg?fit=bounds&format=jpg&width=960"
+                  sx={{ width: 50, height: 50 }}
+                />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline", fontSize: "18px" }}
+                      component="span"
+                      //   variant="body1"
+                    >
+                      {item}
+                    </Typography>
+                  </React.Fragment>
+                }
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline", fontSize: "6" }}
+                      component="span"
+                      variant="body2"
+                    >
+                      Follows You
+                    </Typography>
+                  </React.Fragment>
+                }
               />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline", fontSize: "18px" }}
-                    component="span"
-                    //   variant="body1"
-                  >
-                    {item}
-                  </Typography>
-                </React.Fragment>
-              }
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline", fontSize: "6" }}
-                    component="span"
-                    variant="body2"
-                  >
-                    Follows You
-                  </Typography>
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
+            </ListItem>
+          ))}
+        </List>
+      </div>
+    );
+  else
+    discDrawer = (
+      <Box
+        sx={{
+          position: "relative",
+          display: "flex",
+          top: "50vh",
+          justifyContent: "center",
+        }}
+      >
+        <NavLink to="/auth">
+          <Button>Auth</Button>;
+        </NavLink>
+      </Box>
+    );
 
   return (
     <Box>

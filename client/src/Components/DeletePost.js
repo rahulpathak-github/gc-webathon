@@ -10,9 +10,11 @@ import axios from "axios";
 import axiosins from "../AxiosInstance";
 import Delete from "@mui/icons-material/Delete";
 import { DialogTitle } from "@mui/material";
+import AuthContext from "../Context/AuthContext";
 
 export default function DeletePost(props) {
   const [open, setOpen] = React.useState(false);
+  const { authenticated, currentUser } = React.useContext(AuthContext);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,7 +36,11 @@ export default function DeletePost(props) {
   };
   return (
     <div>
-      <IconButton size="large" onClick={handleClickOpen}>
+      <IconButton
+        size="large"
+        onClick={handleClickOpen}
+        disabled={!authenticated || props.post.author.id != currentUser._id}
+      >
         <Delete />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>

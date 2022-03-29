@@ -11,6 +11,7 @@ import {
   ListItemIcon,
   TextField,
   getTableSortLabelUtilityClass,
+  CircularProgress,
 } from "@mui/material";
 import Delete from "@mui/icons-material/Delete";
 import Reply from "@mui/icons-material/Reply";
@@ -35,6 +36,7 @@ const Comments = (props) => {
   const [openDeleteReply, setOpenDeleteReply] = useState(false);
   const [commentId, setCommentId] = useState(null);
   const [parentIdx, setParentIdx] = useState(null);
+  const { authenticated, currentUser } = useContext(AuthContext);
 
   const handleClickOpen = (commentId) => {
     setOpen(true);
@@ -198,6 +200,12 @@ const Comments = (props) => {
     </Dialog>
   );
 
+  const spinner = (
+    <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <CircularProgress />
+    </Box>
+  );
+
   return (
     <Box sx={{ pb: 7 }}>
       <CssBaseline />
@@ -210,8 +218,9 @@ const Comments = (props) => {
           label="Enter Comment"
           sx={{ width: "90%" }}
           onChange={(e) => setCommentValue(e.target.value)}
+          disabled={!authenticated}
         />
-        <IconButton onClick={addComment}>
+        <IconButton onClick={addComment} disabled={!authenticated}>
           <EnterIcon sx={{ my: "auto" }} />
         </IconButton>
       </Box>
@@ -222,7 +231,11 @@ const Comments = (props) => {
                 <ListItem
                   key={index}
                   secondaryAction={
-                    <IconButton>
+                    <IconButton
+                      disabled={
+                        !authenticated || comment.author.id != currentUser._id
+                      }
+                    >
                       <Delete
                         onClick={() =>
                           handleClickOpenDeleteComment(comment._id)
@@ -232,7 +245,10 @@ const Comments = (props) => {
                   }
                 >
                   <ListItemIcon>
-                    <IconButton onClick={() => handleClickOpen(comment._id)}>
+                    <IconButton
+                      onClick={() => handleClickOpen(comment._id)}
+                      disabled={!authenticated}
+                    >
                       <Reply />
                     </IconButton>
                   </ListItemIcon>
@@ -255,6 +271,10 @@ const Comments = (props) => {
                                 onClick={() =>
                                   handleClickOpenDeleteReply(reply.id, index)
                                 }
+                                disabled={
+                                  !authenticated ||
+                                  reply.author.id != currentUser._id
+                                }
                               >
                                 <Delete />
                               </IconButton>
@@ -272,7 +292,7 @@ const Comments = (props) => {
                 </Box>
               </>
             ))
-          : null}
+          : spinner}
       </List>
     </Box>
   );

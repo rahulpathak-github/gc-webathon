@@ -15,6 +15,7 @@ import Edit from "@mui/icons-material/Edit";
 // import ImageListItem from "@mui/material/ImageListItem";
 import axios from "axios";
 import axiosins from "../AxiosInstance";
+import AuthContext from "../Context/AuthContext";
 
 // const itemData = [
 //   {
@@ -27,6 +28,7 @@ export default function EditPost(props) {
   const [open, setOpen] = React.useState(false);
   const [newCaption, setNewCaption] = useState(null);
   const [firstRender, setFirstRender] = useState(false);
+  const { authenticated, currentUser } = React.useContext(AuthContext);
   const ref = React.useRef();
 
   const handleClickOpen = () => {
@@ -52,7 +54,11 @@ export default function EditPost(props) {
   };
   return (
     <div>
-      <IconButton size="large" onClick={handleClickOpen}>
+      <IconButton
+        size="large"
+        onClick={handleClickOpen}
+        disabled={!authenticated || props.post.author.id != currentUser._id}
+      >
         <Edit />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>

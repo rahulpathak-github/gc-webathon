@@ -13,6 +13,7 @@ import FormDialog from "../Components/FormDialog";
 import { Fab } from "@mui/material";
 import Add from "@mui/icons-material/Add";
 import AuthContext from "../Context/AuthContext";
+import CircularProgress from "@mui/material/CircularProgress";
 const drawerWidth = 250;
 const Feed = (props) => {
   const [addPostModalOpen, setAddPostModalOpen] = useState(false);
@@ -88,6 +89,7 @@ const Feed = (props) => {
     // >
     <Container fluid disableGutters>
       <Fab
+        disabled={!authenticated}
         sx={{
           position: "fixed",
           bottom: 16,
@@ -112,16 +114,20 @@ const Feed = (props) => {
         }}
       >
         <Stack marginTop={"30px"} width={"100%"}>
-          {loading === false
-            ? userPosts.map((post, idx) => (
-                <Post
-                  post={post}
-                  key={idx}
-                  updatePost={updatePost}
-                  deletePost={deletePost}
-                />
-              ))
-            : null}
+          {loading === false ? (
+            userPosts.map((post, idx) => (
+              <Post
+                post={post}
+                key={idx}
+                updatePost={updatePost}
+                deletePost={deletePost}
+              />
+            ))
+          ) : (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress />
+            </Box>
+          )}
         </Stack>
       </Box>
     </Container>
